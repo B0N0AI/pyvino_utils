@@ -24,8 +24,8 @@ REQUIRED = [
 ]
 
 EXTRAS = {
-    'dev' :["twine", "black", "flake8", "isort", "pip", "twine", "wheel"],
-    'testing': ["coverage", "pytest", "tox"]
+    "dev": ["twine", "black", "flake8", "isort", "pip", "twine", "wheel"],
+    "testing": ["coverage", "pytest", "tox"],
 }
 
 REQUIRES_PYTHON = ">=3.6.0"
@@ -109,7 +109,7 @@ class UploadCommand(Command):
             os.system(f"git tag v{about.get('__version__')}")
             os.system("git push --tags")
             response = input("Do you want to generate a CHANGELOG.md? (y/n) ")
-            if response.lower() == 'y':
+            if response.lower() == "y":
                 self.status("Generating the CHANGELOG.md.")
                 os.system("make changelog")
             sys.exit(p.returncode)
@@ -126,26 +126,25 @@ setup(
     python_requires=REQUIRES_PYTHON,
     url=URL,
     packages=find_packages(
-        include=['pyvino_utils'],
-        exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
-        ),
+        include=["pyvino_utils"], exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
+    ),
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
     scripts=SCRIPTS,
     license="MIT license",
     classifiers=[
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: MIT License',
-        'Natural Language :: English',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: MIT License",
+        "Natural Language :: English",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
     ],
-    keywords='pyvino_utils',
-    test_suite='tests',
-    tests_require=['pytest', 'unittest'],
+    keywords="pyvino_utils",
+    test_suite="tests",
+    tests_require=["pytest", "unittest"],
     project_urls={
         "Bug Reports": f"{URL}/issues",
         "Source": URL,

@@ -3,7 +3,7 @@
 """Top-level package for pyvino-utils."""
 
 __author__ = """Mpho Mphego"""
-__email__ = 'mpho112@gmail.com'
+__email__ = "mpho112@gmail.com"
 
 
 from .models import facial, openvino_base

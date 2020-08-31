@@ -37,10 +37,10 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 pyvino_utils tests
+	flake8 --max-line-length 90 pyvino_utils tests
 
 formatter: ## Format style with black
-	find . -name "*.py" -exec black -l 90 {} \;
+	black -l 90 .
 
 test: ## run tests quickly with the default Python
 	python setup.py test

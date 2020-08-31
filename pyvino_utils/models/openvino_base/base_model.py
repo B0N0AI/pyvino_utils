@@ -12,7 +12,7 @@ from openvino.inference_engine import IENetwork, IECore, get_version
 
 
 def openvino_version():
-    return list(map(int, get_version().split('.')))
+    return list(map(int, get_version().split(".")))
 
 
 if openvino_version() != (2, 1):
@@ -63,12 +63,10 @@ class Base(ABC):
         self.perf_stats = {}
         self.load_model()
 
-
     @property
     def model_size(self):
         if hasattr(self, "model_weights"):
             return os.stat(self.model_weights).st_size / 1024.0 ** 2
-
 
     def _get_model(self):
         """Helper function for reading the network."""
@@ -79,9 +77,7 @@ class Base(ABC):
                 )
             except AttributeError:
                 logger.warn("Using an old version of OpenVINO, consider updating it!")
-                model = IENetwork(
-                    model=self.model_structure, weights=self.model_weights
-                )
+                model = IENetwork(model=self.model_structure, weights=self.model_weights)
         except Exception:
             raise ValueError(
                 "Could not Initialise the network. "
@@ -89,7 +85,6 @@ class Base(ABC):
             )
         else:
             return model
-
 
     def load_model(self):
         """Load the model into the plugin"""
@@ -103,7 +98,6 @@ class Base(ABC):
                 f"Model: {self.model_structure} took "
                 f"{self._model_load_time:.3f} ms to load."
             )
-
 
     def preprocess_input(self, image, height=None, width=None, **kwargs):
         """Helper function for processing frame"""
@@ -125,7 +119,6 @@ class Base(ABC):
             gray_p_frame = cv2.GaussianBlur(gray_p_frame, (5, 5), 0)
 
         return p_frame, gray_p_frame
-
 
     def predict(self, image, request_id=0, show_bbox=False, **kwargs):
         if not isinstance(image, np.ndarray):
@@ -153,7 +146,6 @@ class Base(ABC):
             )
             return (predict_end_time, bbox, gray_p_frame)
 
-
     @abstractstaticmethod
     def draw_output(image):
         raise NotImplementedError("Please Implement this method")
@@ -162,4 +154,3 @@ class Base(ABC):
     def preprocess_output(self, inference_results, image, show_bbox=False, **kwargs):
         """Draw bounding boxes onto the frame."""
         raise NotImplementedError("Please Implement this method")
-

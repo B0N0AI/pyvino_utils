@@ -9,6 +9,7 @@ import warnings
 
 from pyvino_utils.pyvino_utils import PyvinoUtils
 
+
 class TestPyvino_utils(unittest.TestCase):
     """Tests for `pyvino_utils` package."""
 

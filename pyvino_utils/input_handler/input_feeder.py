@@ -7,7 +7,8 @@ from tqdm import tqdm
 from loguru import logger
 from numpy import ndarray
 
-__all__ = ['InputFeeder']
+__all__ = ["InputFeeder"]
+
 
 class FormatNotSupported(Exception):
     pass
