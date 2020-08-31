@@ -7,13 +7,14 @@ from tqdm import tqdm
 from loguru import logger
 from numpy import ndarray
 
+__all__ = ['InputFeeder']
 
 class FormatNotSupported(Exception):
     pass
 
 
 class InputFeeder:
-    def __init__(self, input_feed=None):
+    def __init__(self, input_feed=None, cam_input=0):
         """
         This class can be used to feed input from an image, webcam, or video to your model.
 
@@ -22,13 +23,15 @@ class InputFeeder:
         input_feed: str
             The file that contains the input image or video file.
             Leave empty for cam input_type.
+        cam_input: int
+            WebCam input [Default: 0]
 
         Example
         -------
         ```
-            feed=InputFeeder(input_feed='video.mp4')
-            for batch in feed.next_frame():
-                do_something(batch)
+            feed = InputFeeder(input_feed='video.mp4')
+            for frame in feed.next_frame():
+                do_something(frame)
             feed.close()
         ```
         """
@@ -41,16 +44,16 @@ class InputFeeder:
         except AssertionError:
             self._input_type = ""
         self._progress_bar = None
-        self.load_data()
+        self.load_feed(cam_input)
 
-    def load_data(self):
+    def load_feed(self, cam_input):
         if "video" in self._input_type:
             self.cap = cv2.VideoCapture(self.input_feed)
         elif "image" in self._input_type:
             self.cap = cv2.imread(self.input_feed)
         elif "cam" in self.input_feed.lower():
             self._input_type = self.input_feed
-            self.cap = cv2.VideoCapture(0)
+            self.cap = cv2.VideoCapture(cam_input)
         else:
             msg = f"Source: {self.input_feed} not supported!"
             logger.warn(msg)

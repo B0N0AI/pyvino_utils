@@ -5,7 +5,6 @@
 __author__ = """Mpho Mphego"""
 __email__ = 'mpho112@gmail.com'
 
-from loguru import logger
 
-from . import models
-from . import input_handler
+from .models import facial, openvino_base
+from .input_handler import InputFeeder
