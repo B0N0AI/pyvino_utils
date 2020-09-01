@@ -1,6 +1,7 @@
 import cv2
 from ..openvino_base.base_model import Base
 
+
 class Facial_Landmarks(Base):
     """Class for the Facial Landmarks Detection Model."""
 
@@ -14,12 +15,7 @@ class Facial_Landmarks(Base):
         extensions=None,
     ):
         super().__init__(
-            model_name,
-            source_width,
-            source_height,
-            device,
-            threshold,
-            extensions,
+            model_name, source_width, source_height, device, threshold, extensions,
         )
 
     def preprocess_output(self, inference_results, image, show_bbox=False):
@@ -119,17 +115,18 @@ class Facial_Landmarks(Base):
                         left_eye_ymin:left_eye_ymax, left_eye_xmin:left_eye_xmax
                     ],
                     "right_eye_image": image[
-                        right_eye_ymin:right_eye_ymax,
-                        right_eye_xmin:right_eye_xmax,
+                        right_eye_ymin:right_eye_ymax, right_eye_xmin:right_eye_xmax,
                     ],
                 },
                 "nose_coords": {},
                 "mouth_coords": {},
             }
 
+        results = {"face_landmarks": face_landmarks, "image": image}
+
         if show_bbox:
             self.draw_output(image, face_landmarks)
-        return face_landmarks, image
+        return results
 
     @staticmethod
     def draw_output(image, face_landmarks, radius=20, thickness=2):
