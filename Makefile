@@ -43,8 +43,9 @@ formatter: ## Format style with black
 	isort -rc .
 	black -l 90 .
 
-test: ## run tests quickly with the default Python
-	tox
+test: ## run tests in docker
+	docker run --rm -ti --volume $(CURDIR):/app mmphego/intel-openvino \
+		bash -c "source /opt/intel/openvino/bin/setupvars.sh && pytest -sv"
 
 changelog: ## Generate changelog for current repo
 	docker run -it --rm -v "$(pwd)":/usr/local/src/your-app mmphego/github-changelog
