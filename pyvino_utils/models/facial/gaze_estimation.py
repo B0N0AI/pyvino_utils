@@ -1,4 +1,8 @@
+import time
+
 import cv2
+import numpy as np
+
 from ..openvino_base.base_model import Base
 
 

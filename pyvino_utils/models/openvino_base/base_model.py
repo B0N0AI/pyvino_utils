@@ -1,21 +1,20 @@
 import os
 import time
-
 from abc import ABC, abstractmethod, abstractstaticmethod
 from pathlib import Path
 
 import cv2
 import numpy as np
-
 from loguru import logger
-from openvino.inference_engine import IENetwork, IECore, get_version
+
+from openvino.inference_engine import IECore, IENetwork, get_version
 
 
 def openvino_version_check():
     version = tuple(map(int, get_version().split(".")))[:2]
     if version != (2, 1):
         logger.warning(
-            f"OpenVINO version: {openvino_version()!r} not compatible with this library, "
+            f"OpenVINO version: {version!r} not compatible with this library, "
             f"expected version: 2.1.xxx"
         )
 
@@ -146,6 +145,7 @@ class Base(ABC):
             )
             return (predict_end_time, bbox, gray_p_frame)
 
+    @staticmethod
     @abstractstaticmethod
     def draw_output(image):
         raise NotImplementedError("Please Implement this method")

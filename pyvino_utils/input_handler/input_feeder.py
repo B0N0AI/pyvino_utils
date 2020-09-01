@@ -2,10 +2,9 @@ import mimetypes
 import os
 
 import cv2
-from tqdm import tqdm
-
 from loguru import logger
-from numpy import ndarray
+
+from tqdm import tqdm
 
 __all__ = ["InputFeeder"]
 
@@ -17,7 +16,8 @@ class FormatNotSupported(Exception):
 class InputFeeder:
     def __init__(self, input_feed=None, cam_input=0):
         """
-        This class can be used to feed input from an image, webcam, or video to your model.
+        This class can be used to feed input from an image, webcam, or video to your
+        model.
 
         Parameters
         ----------
@@ -116,7 +116,7 @@ class InputFeeder:
         out_video = cv2.VideoWriter(
             os.path.join(output_path, filename),
             cv2.VideoWriter_fourcc(*"avc1"),
-            fps,
+            self.fps,
             (self.source_width, self.source_height),
             True,
         )

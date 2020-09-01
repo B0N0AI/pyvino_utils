@@ -1,5 +1,9 @@
+import math
+
 import cv2
-from ..openvino_base.base_model import Base
+import numpy as np
+
+from ..openvino_base.base_model import Base, InvalidModel
 
 
 class HeadPoseEstimation(Base):
@@ -53,7 +57,8 @@ class HeadPoseEstimation(Base):
     def draw_output(coords, image):
         """Draw head pose estimation on frame.
 
-        Ref: https://github.com/natanielruiz/deep-head-pose/blob/master/code/utils.py#L86+L117
+        Ref:
+        https://github.com/natanielruiz/deep-head-pose/blob/master/code/utils.py#L86+L117
         """
         yaw, pitch, roll = coords.values()
 

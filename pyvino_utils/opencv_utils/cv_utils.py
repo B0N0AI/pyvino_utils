@@ -1,5 +1,6 @@
 import cv2
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 def select_color(color: str):
@@ -14,7 +15,6 @@ def select_color(color: str):
 
 def plot_current_frame(image):
     """Helper function for finding image coordinates/px"""
-    img = image[:, :, 0]
     plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     plt.show()
 
@@ -37,11 +37,14 @@ def add_text_to_image(
 class Contours:
     _first_frame = None
 
-    def get_contours(self, gray_p_frame):
+    def get_contours(self, gray_p_frame, image):
         """
-        Ref: https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-with-python-and-opencv/
+        Ref:
+        https://www.pyimagesearch.com/2015/05/25/basic-motion-detection-and-tracking-\
+        with-python-and-opencv/
 
-        Motion tracking: https://www.pyimagesearch.com/2015/09/21/opencv-track-object-movement/
+        Motion tracking:
+            https://www.pyimagesearch.com/2015/09/21/opencv-track-object-movement/
         """
         # if the first frame is None, initialize it
         if self._first_frame is None:
@@ -65,16 +68,16 @@ class Contours:
         )
 
         # TODO:
-        # Add logic for tracking movements...See get_contours() docstring for some ideas on
-        # adding the logic, also get better lighting video
+        # Add logic for tracking movements...See get_contours() docstring for some ideas
+        # on adding the logic, also get better lighting video
         if contours:
             for cnt in contours:
                 if cv2.contourArea(cnt) < 1000:
                     continue
 
-                M = cv2.moments(cnt)
-                cx = int(M["m10"] / M["m00"])
-                cy = int(M["m01"] / M["m00"])
+                mom = cv2.moments(cnt)
+                cx = int(mom["m10"] / mom["m00"])
+                cy = int(mom["m01"] / mom["m00"])
                 # cv2.drawContours(image, cnt, -1, (0, 0, 255), 5)
                 y, x = image.shape[:2]
                 cv2.circle(image, (x // 2, y // 2), 200, (0, 255, 0), 20)
