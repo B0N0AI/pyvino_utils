@@ -1,7 +1,7 @@
 import os
 import time
 
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractstaticmethod
 from pathlib import Path
 
 import cv2
@@ -11,15 +11,13 @@ from loguru import logger
 from openvino.inference_engine import IENetwork, IECore, get_version
 
 
-def openvino_version():
-    return list(map(int, get_version().split(".")))
-
-
-if openvino_version() != (2, 1):
-    logger.warning(
-        f"OpenVINO version: {openvino_version()!r} not compatible with this library, "
-        f"expected version: 2.1.xxx"
-    )
+def openvino_version_check():
+    version = tuple(map(int, get_version().split(".")))[:2]
+    if version != (2, 1):
+        logger.warning(
+            f"OpenVINO version: {openvino_version()!r} not compatible with this library, "
+            f"expected version: 2.1.xxx"
+        )
 
 
 class InvalidModel(Exception):
@@ -44,6 +42,8 @@ class Base(ABC):
             Path(self.model_weights).absolute().exists()
             and Path(self.model_structure).absolute().exists()
         )
+
+        openvino_version_check()
 
         self.device = device
         self.threshold = threshold

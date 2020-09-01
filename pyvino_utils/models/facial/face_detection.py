@@ -1,6 +1,6 @@
 import cv2
-import IPython; globals().update(locals()); IPython.embed(header='Python Debugger')
-from openvino_base import Base
+from ..openvino_base.base_model import Base
+
 
 class Face_Detection(Base):
     """Class for the Face Detection Model."""

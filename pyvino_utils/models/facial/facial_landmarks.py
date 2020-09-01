@@ -1,3 +1,6 @@
+import cv2
+from ..openvino_base.base_model import Base
+
 class Facial_Landmarks(Base):
     """Class for the Facial Landmarks Detection Model."""
 

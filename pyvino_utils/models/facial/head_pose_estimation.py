@@ -1,3 +1,6 @@
+import cv2
+from ..openvino_base.base_model import Base
+
 
 class Head_Pose_Estimation(Base):
     """Class for the Head Pose Estimation Model."""

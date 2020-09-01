@@ -1,3 +1,6 @@
+import cv2
+from ..openvino_base.base_model import Base
+
 
 class Gaze_Estimation(Base):
     """Class for the Gaze Estimation Detection Model."""
