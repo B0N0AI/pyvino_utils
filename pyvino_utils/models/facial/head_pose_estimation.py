@@ -2,7 +2,7 @@ import cv2
 from ..openvino_base.base_model import Base
 
 
-class Head_Pose_Estimation(Base):
+class HeadPoseEstimation(Base):
     """Class for the Head Pose Estimation Model."""
 
     def __init__(
@@ -117,4 +117,3 @@ class Head_Pose_Estimation(Base):
             color=color,
             thickness=thickness,
         )
-

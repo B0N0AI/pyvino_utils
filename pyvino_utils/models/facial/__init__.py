@@ -1,11 +1,11 @@
-from .face_detection import Face_Detection
-from .facial_landmarks import Facial_Landmarks
-from .gaze_estimation import Gaze_Estimation
-from .head_pose_estimation import Head_Pose_Estimation
+from .face_detection import FaceDetection
+from .facial_landmarks import FacialLandmarks
+from .gaze_estimation import GazeEstimation
+from .head_pose_estimation import HeadPoseEstimation
 
 __all__ = [
-    "Face_Detection",
-    "Facial_Landmarks",
-    "Gaze_Estimation",
-    "Head_Pose_Estimation",
+    "FaceDetection",
+    "FacialLandmarks",
+    "GazeEstimation",
+    "HeadPoseEstimation",
 ]

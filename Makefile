@@ -43,7 +43,7 @@ formatter: ## Format style with black
 	black -l 90 .
 
 test: ## run tests quickly with the default Python
-	python setup.py test
+	tox
 
 changelog: ## Generate changelog for current repo
 	docker run -it --rm -v "$(pwd)":/usr/local/src/your-app mmphego/github-changelog

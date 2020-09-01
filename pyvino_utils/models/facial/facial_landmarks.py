@@ -1,8 +1,10 @@
 import cv2
+import numpy as np
+
 from ..openvino_base.base_model import Base
 
 
-class Facial_Landmarks(Base):
+class FacialLandmarks(Base):
     """Class for the Facial Landmarks Detection Model."""
 
     def __init__(
@@ -14,28 +16,33 @@ class Facial_Landmarks(Base):
         threshold=0.60,
         extensions=None,
     ):
+        self._model_type = (
+            "landmarks-regression-retail"
+            if "regression" in model_name
+            else "facial-landmarks-35-adas"
+        )
         super().__init__(
             model_name, source_width, source_height, device, threshold, extensions,
         )
 
     def preprocess_output(self, inference_results, image, show_bbox=False):
         """Draw bounding boxes onto the Facial Landmarks frame."""
-        # If using model: https://docs.openvinotoolkit.org/latest/_models_intel_landmarks_regression_retail_0009_description_landmarks_regression_retail_0009.html
         flattened_predictions = np.vstack(inference_results).ravel()
-        h, w = image.shape[:2]
+        face_h, face_w = image.shape[:2]
 
         if len(flattened_predictions) == 70:
+            landmarks = []
             for i in range(flattened_predictions.size // 2):
                 x_coord = int(face_w * flattened_predictions[2 * i])
                 y_coord = int(face_h * flattened_predictions[2 * i + 1])
                 landmarks.append((x_coord, y_coord))
 
             face_landmarks = {
-                "type": "",
+                "type": self._model_type,
                 "eyes_coords": landmarks[:4],
                 "nose_coords": landmarks[4:8],
                 "mouth_coords": landmarks[8:12],
-                "face_edges_coords": landmarks[12:],
+                "face_contour": landmarks[12:],
             }
         else:
             coord_mapping = dict(
@@ -61,41 +68,41 @@ class Facial_Landmarks(Base):
 
             # left eye offset of face
             left_eye_x_coord, left_eye_xmin, left_eye_xmax = get_eye_points(
-                coord_mapping["left_eye_x_coord"] * w
+                coord_mapping["left_eye_x_coord"] * face_w
             )
 
             # left eye offset of face
             left_eye_y_coord, left_eye_ymin, left_eye_ymax = get_eye_points(
-                coord_mapping["left_eye_y_coord"] * h
+                coord_mapping["left_eye_y_coord"] * face_h
             )
 
             # right eye offset of face
             right_eye_x_coord, right_eye_xmin, right_eye_xmax = get_eye_points(
-                coord_mapping["right_eye_x_coord"] * w
+                coord_mapping["right_eye_x_coord"] * face_w
             )
 
             # right eye offset of face
             right_eye_y_coord, right_eye_ymin, right_eye_ymax = get_eye_points(
-                coord_mapping["right_eye_y_coord"] * h
+                coord_mapping["right_eye_y_coord"] * face_h
             )
             eye_size = 10
 
-            left_eye_x_coord = int(flattened_predictions[0] * w)
+            left_eye_x_coord = int(flattened_predictions[0] * face_w)
             # left eye offset of face
             left_eye_xmin = left_eye_x_coord - eye_size
             left_eye_xmax = left_eye_x_coord + eye_size
 
-            left_eye_y_coord = int(flattened_predictions[1] * h)
+            left_eye_y_coord = int(flattened_predictions[1] * face_h)
             # left eye offset of face
             left_eye_ymin = left_eye_y_coord - eye_size
             left_eye_ymax = left_eye_y_coord + eye_size
 
-            right_eye_x_coord = int(flattened_predictions[2] * w)
+            right_eye_x_coord = int(flattened_predictions[2] * face_w)
             # right eye offset of face
             right_eye_xmin = right_eye_x_coord - eye_size
             right_eye_xmax = right_eye_x_coord + eye_size
 
-            right_eye_y_coord = int(flattened_predictions[3] * h)
+            right_eye_y_coord = int(flattened_predictions[3] * face_h)
             # right eye offset of face
             right_eye_ymin = right_eye_y_coord - eye_size
             right_eye_ymax = right_eye_y_coord + eye_size
@@ -103,11 +110,11 @@ class Facial_Landmarks(Base):
             nose_coord = coord_mapping["nose_coord"]
 
             # mouth coordinates
-            left_part_mouth = coord_mapping["left_mouth_coord"] * w
-            right_part_mouth = coord_mapping["right_mouth_coord"] * w
+            left_part_mouth = coord_mapping["left_mouth_coord"] * face_w
+            right_part_mouth = coord_mapping["right_mouth_coord"] * face_w
 
             face_landmarks = {
-                "type": "",
+                "type": self._model_type,
                 "eyes_coords": {
                     "left_eye_point": (left_eye_x_coord, left_eye_y_coord),
                     "right_eye_point": (right_eye_x_coord, right_eye_y_coord),
@@ -118,8 +125,8 @@ class Facial_Landmarks(Base):
                         right_eye_ymin:right_eye_ymax, right_eye_xmin:right_eye_xmax,
                     ],
                 },
-                "nose_coords": {},
-                "mouth_coords": {},
+                "nose_coords": {"nose_coords": nose_coord},
+                "mouth_coords": {"mouth_coords": [left_part_mouth, right_part_mouth]},
             }
 
         results = {"face_landmarks": face_landmarks, "image": image}
@@ -129,17 +136,12 @@ class Facial_Landmarks(Base):
         return results
 
     @staticmethod
-    def draw_output(image, face_landmarks, radius=20, thickness=2):
+    def draw_output(image, face_landmarks, radius=20, color=(0, 0, 255), thickness=2):
         """Draw a circle around ROI"""
         for landmark in face_landmarks:
             if landmark == "eyes_coords":
                 for eye, coords in face_landmarks["eyes_coords"].items():
                     if "point" in eye:
-                        print(coords)
                         cv2.circle(
-                            image,
-                            (coords[0], coords[1]),
-                            radius,
-                            COLORS["Red"],
-                            thickness,
+                            image, (coords[0], coords[1]), radius, color, thickness,
                         )

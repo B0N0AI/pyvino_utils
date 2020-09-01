@@ -2,7 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 
-def select_color(color):
+def select_color(color: str):
     colors = {
         "blue": (255, 0, 0),
         "green": (0, 255, 0),

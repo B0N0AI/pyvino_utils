@@ -2,7 +2,7 @@ import cv2
 from ..openvino_base.base_model import Base
 
 
-class Face_Detection(Base):
+class FaceDetection(Base):
     """Class for the Face Detection Model."""
 
     def __init__(
@@ -58,10 +58,7 @@ class Face_Detection(Base):
         )
 
         ((label_width, label_height), _) = cv2.getTextSize(
-            label,
-            cv2.FONT_HERSHEY_PLAIN,
-            fontScale=text_scale,
-            thickness=text_thickness,
+            label, cv2.FONT_HERSHEY_PLAIN, fontScale=text_scale, thickness=text_thickness,
         )
 
         cv2.rectangle(
@@ -83,4 +80,3 @@ class Face_Detection(Base):
             color=text_color,
             thickness=text_thickness,
         )
-
