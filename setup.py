@@ -19,7 +19,7 @@ DESCRIPTION = "Simplfied openvino models Python implementation"
 EMAIL = "mpho@mphomphego.co.za"
 NAME = "pyvino_utils"
 REQUIRED = [
-    "loguru",
+    "loguru", "tqdm", "matplotlib", "numpy"
 ]
 
 EXTRAS = {
