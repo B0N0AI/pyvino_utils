@@ -141,7 +141,8 @@ setup(
     ],
     keywords="pyvino_utils",
     test_suite="tests",
-    tests_require=["pytest", "unittest"],
+    setup_requires=["pytest-runner",],
+    tests_require=["pytest"],
     project_urls={
         "Bug Reports": f"{URL}/issues",
         "Source": URL,

@@ -1,4 +1,13 @@
-.PHONY: clean clean-test clean-pyc clean-build docs help changelog
+.ONESHELL:
+
+SHELL := /bin/bash
+DATE_ID := $(shell date +"%y.%m.%d")
+
+# Get package name from pwd
+PACKAGE_NAME := $(shell basename $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
+SOURCE_DIR = source /opt/intel/openvino/bin/setupvars.sh
+TEST_CMD = "$(SOURCE_DIR) && pytest -setupvars"
+
 .DEFAULT_GOAL := help
 
 define PRINT_HELP_PYSCRIPT
@@ -12,10 +21,15 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
-TEST_CMD =  "source /opt/intel/openvino/bin/setupvars.sh && pytest -sv"
+
+
+.PHONY: clean clean-test clean-pyc clean-build docs help changelog
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+
+build-image:
+	docker build -t "$(USER)/$(shell basename $(CURDIR))" .
 
 clean: clean-build clean-pyc clean-test ## remove all build, test, coverage and Python artifacts
 
@@ -29,7 +43,6 @@ clean-build: ## remove build artifacts
 clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyc' -exec rm -f {} +
 	find . -name '*.pyo' -exec rm -f {} +
-	find . -name '*~' -exec rm -f {} +
 	find . -name '__pycache__' -exec rm -fr {} +
 
 clean-test: ## remove test and coverage artifacts
@@ -38,32 +51,25 @@ clean-test: ## remove test and coverage artifacts
 	rm -fr .pytest_cache
 
 lint: ## check style with flake8
-	flake8 --max-line-length 90 pyvino_utils tests
+	flake8 --max-line-length 90 $(PACKAGE_NAME) tests
 
 formatter: ## Format style with black
 	isort -rc .
 	black -l 90 .
 
-test: ## run tests in docker
+test: clean build-image ## run tests in docker
 	docker run --rm -ti --volume $(CURDIR):/app $(USER)/$(shell basename $(CURDIR)) \
 		bash -c $(TEST_CMD)
 
 changelog: ## Generate changelog for current repo
 	docker run -it --rm -v "$(pwd)":/usr/local/src/your-app mmphego/github-changelog
 
-coverage: ## check code coverage quickly with the default Python
-	coverage run --source pyvino_utils setup.py test
-	coverage report -m
-	coverage html
-	$(BROWSER) htmlcov/index.html
+coverage: clean build-image ## check code coverage quickly with the default Python
+	docker run --rm -ti --volume $(CURDIR):/app $(USER)/$(shell basename $(CURDIR)) \
+		bash -c "$(SOURCE_DIR) && \
+			coverage run --source=pyvino_utils -m pytest -sv . && \
+			coverage report -m && \
+			coverage html"
 
-# release: dist ## package and upload a release
-# 	twine upload dist/*
-
-# dist: clean ## builds source and wheel package
-# 	python setup.py sdist
-# 	python setup.py bdist_wheel
-# 	ls -l dist
-
-# install: clean ## install the package to the active Python's site-packages
-# 	python setup.py install
+view-coverage:
+	@firefox htmlcov/index.html
