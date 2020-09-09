@@ -1,5 +1,7 @@
-from .person_detection import PersonDetection
+# Python standard library
+import os
+import pkgutil
 
-__all__ = [
-    "PersonDetection",
-]
+from . import person_detection
+
+__all__ = [module for _, module, _ in pkgutil.iter_modules([os.path.dirname(__file__)])]

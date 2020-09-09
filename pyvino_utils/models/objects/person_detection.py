@@ -1,7 +1,7 @@
-import cv2
-import numpy as np
+import cv2  # noqa: F401
+import numpy as np  # noqa: F401
 
-from ..openvino_base.base_model import Base, InvalidModel
+from ..openvino_base.base_model import Base
 
 
 class PersonDetection(Base):

@@ -16,7 +16,7 @@ here = os.path.abspath(os.path.dirname(__file__))
 # Package meta-data.
 AUTHOR = "Mpho Mphego"
 DESCRIPTION = "Simplfied openvino models Python implementation"
-EMAIL = "mpho112@gmail.com"
+EMAIL = "mpho@mphomphego.co.za"
 NAME = "pyvino_utils"
 REQUIRED = [
     "loguru",
@@ -124,9 +124,7 @@ setup(
     author_email=EMAIL,
     python_requires=REQUIRES_PYTHON,
     url=URL,
-    packages=find_packages(
-        include=["pyvino_utils"], exclude=["tests", "*.tests", "*.tests.*", "tests.*"]
-    ),
+    packages=find_packages(exclude=["tests", "*.tests", "*.tests.*", "tests.*"]),
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,

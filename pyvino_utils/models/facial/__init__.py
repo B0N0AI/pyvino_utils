@@ -1,11 +1,7 @@
-from .face_detection import FaceDetection
-from .facial_landmarks import FacialLandmarks
-from .gaze_estimation import GazeEstimation
-from .head_pose_estimation import HeadPoseEstimation
+# Python standard library
+import os
+import pkgutil
 
-__all__ = [
-    "FaceDetection",
-    "FacialLandmarks",
-    "GazeEstimation",
-    "HeadPoseEstimation",
-]
+from . import face_detection, facial_landmarks, gaze_estimation, head_pose_estimation
+
+__all__ = [module for _, module, _ in pkgutil.iter_modules([os.path.dirname(__file__)])]
