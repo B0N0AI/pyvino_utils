@@ -9,7 +9,7 @@ from loguru import logger
 
 from openvino.inference_engine import IECore, IENetwork, get_version
 
-from .faults import InvalidModel
+from .faults import InvalidImageArray, InvalidModel
 
 
 def openvino_version_check():
@@ -42,8 +42,8 @@ class Base(ABC):
 
         openvino_version_check()
 
-        self.device = device
         self.threshold = threshold
+        self._device = device
         self._model_size = os.stat(self.model_weights).st_size / 1024.0 ** 2
 
         self._ie_core = IECore()
@@ -62,6 +62,7 @@ class Base(ABC):
 
     @property
     def model_size(self):
+        """Get the size of model in Megabytes."""
         if hasattr(self, "model_weights"):
             return os.stat(self.model_weights).st_size / 1024.0 ** 2
 
@@ -73,30 +74,52 @@ class Base(ABC):
                     model=self.model_structure, weights=self.model_weights
                 )
             except AttributeError:
-                logger.warn("Using an old version of OpenVINO, consider updating it!")
-                model = IENetwork(
-                    model=self.model_structure, weights=self.model_weights
+                logger.warn(
+                    f"Using an old version of OpenVINO, "
+                    f"Please update it to version: {get_version()}!"
                 )
+                model = IENetwork(model=self.model_structure, weights=self.model_weights)
         except Exception:
-            raise ValueError(
+            msg = (
                 "Could not Initialise the network. "
                 "Have you entered the correct model path?"
             )
+            logger.exception(msg)
+            raise InvalidModel(msg)
         else:
             return model
 
     def load_model(self):
-        """Load the model into the plugin"""
+        """Load the model into the plugin."""
         if self.exec_network is None:
             start_time = time.time()
             self.exec_network = self._ie_core.load_network(
-                network=self.model, device_name=self.device
+                network=self.model, device_name=self._device
             )
             self._model_load_time = (time.time() - start_time) * 1000
             logger.info(
                 f"Model: {self.model_structure} took "
                 f"{self._model_load_time:.3f} ms to load."
             )
+            self._check_supported_layers()
+
+    def _check_supported_layers(self):
+        """Check if layers are supported by the device."""
+        if self.exec_network is None:
+            supported_layers = self.ie_core.query_network(
+                network=self.exec_network, device_name=self._device
+            )
+
+            unsupported_layers = [
+                layer
+                for layer in self.exec_network.layers.keys()
+                if layer not in supported_layers
+            ]
+            if len(unsupported_layers) != 0:
+                logger.warning(
+                    f"Unsupported layers found: {unsupported_layers}, "
+                    "Check whether extensions are available to add to IECore."
+                )
 
     def preprocess_input(self, image, height=None, width=None, **kwargs):
         """Helper function for processing frame"""
@@ -121,7 +144,7 @@ class Base(ABC):
 
     def predict(self, image, request_id=0, show_bbox=False, **kwargs):
         if not isinstance(image, np.ndarray):
-            raise IOError("Image not parsed correctly.")
+            raise InvalidImageArray("Image not parsed correctly.")
 
         p_image, gray_p_frame = self.preprocess_input(image, **kwargs)
 
