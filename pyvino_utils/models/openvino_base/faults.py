@@ -1,0 +1,4 @@
+
+class InvalidModel(Exception):
+    pass
+

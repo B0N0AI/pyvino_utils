@@ -9,6 +9,8 @@ from loguru import logger
 
 from openvino.inference_engine import IECore, IENetwork, get_version
 
+from .faults import InvalidModel
+
 
 def openvino_version_check():
     version = tuple(map(int, get_version().split(".")))[:2]
@@ -17,10 +19,6 @@ def openvino_version_check():
             f"OpenVINO version: {version!r} not compatible with this library, "
             f"expected version: 2.1.xxx"
         )
-
-
-class InvalidModel(Exception):
-    pass
 
 
 class Base(ABC):
@@ -76,7 +74,9 @@ class Base(ABC):
                 )
             except AttributeError:
                 logger.warn("Using an old version of OpenVINO, consider updating it!")
-                model = IENetwork(model=self.model_structure, weights=self.model_weights)
+                model = IENetwork(
+                    model=self.model_structure, weights=self.model_weights
+                )
         except Exception:
             raise ValueError(
                 "Could not Initialise the network. "
