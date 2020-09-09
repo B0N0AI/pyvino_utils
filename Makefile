@@ -6,7 +6,7 @@ DATE_ID := $(shell date +"%y.%m.%d")
 # Get package name from pwd
 PACKAGE_NAME := $(shell basename $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 SOURCE_DIR = source /opt/intel/openvino/bin/setupvars.sh
-TEST_CMD = "$(SOURCE_DIR) && pytest -setupvars"
+TEST_CMD = "$(SOURCE_DIR) && pytest -sv ."
 
 .DEFAULT_GOAL := help
 
