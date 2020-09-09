@@ -22,11 +22,10 @@ endef
 export PRINT_HELP_PYSCRIPT
 
 
-
 .PHONY: clean clean-test clean-pyc clean-build docs help changelog
 
 help:
-	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
 build-image:
 	docker build -t "$(USER)/$(shell basename $(CURDIR))" .
@@ -67,7 +66,7 @@ changelog: ## Generate changelog for current repo
 coverage: clean build-image ## check code coverage quickly with the default Python
 	docker run --rm -ti --volume $(CURDIR):/app $(USER)/$(shell basename $(CURDIR)) \
 		bash -c "$(SOURCE_DIR) && \
-			coverage run --source=pyvino_utils -m pytest -sv . && \
+			coverage run --source=$(PACKAGE_NAME) -m pytest -sv . && \
 			coverage report -m && \
 			coverage html"
 
