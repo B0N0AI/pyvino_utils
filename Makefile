@@ -12,6 +12,7 @@ for line in sys.stdin:
 endef
 export PRINT_HELP_PYSCRIPT
 
+TEST_CMD =  "source /opt/intel/openvino/bin/setupvars.sh && pytest -sv"
 
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
@@ -44,17 +45,17 @@ formatter: ## Format style with black
 	black -l 90 .
 
 test: ## run tests in docker
-	docker run --rm -ti --volume $(CURDIR):/app mmphego/intel-openvino \
-		bash -c "source /opt/intel/openvino/bin/setupvars.sh && pytest -sv"
+	docker run --rm -ti --volume $(CURDIR):/app $(USER)/$(shell basename $(CURDIR)) \
+		bash -c $(TEST_CMD)
 
 changelog: ## Generate changelog for current repo
 	docker run -it --rm -v "$(pwd)":/usr/local/src/your-app mmphego/github-changelog
 
-# coverage: ## check code coverage quickly with the default Python
-# 	coverage run --source pyvino_utils setup.py test
-# 	coverage report -m
-# 	coverage html
-# 	$(BROWSER) htmlcov/index.html
+coverage: ## check code coverage quickly with the default Python
+	coverage run --source pyvino_utils setup.py test
+	coverage report -m
+	coverage html
+	$(BROWSER) htmlcov/index.html
 
 # release: dist ## package and upload a release
 # 	twine upload dist/*
