@@ -25,6 +25,7 @@ class GazeEstimation(Base):
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         gaze_vector = dict(zip(["x", "y", "z"], np.vstack(inference_results).ravel()))
 
+        # TODO: Figure out why I had to comment this code out?
         # roll_val = kwargs["head_pose_angles"]["roll"]
 
         # cos_theta = math.cos(roll_val * math.pi / 180)

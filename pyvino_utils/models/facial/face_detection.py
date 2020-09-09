@@ -46,7 +46,7 @@ class FaceDetection(Base):
         ymin,
         xmax,
         ymax,
-        label="Person's Face",
+        label="Face",
         bbox_color=(0, 255, 0),
         padding_size=(0.05, 0.25),
         text_color=(255, 255, 255),

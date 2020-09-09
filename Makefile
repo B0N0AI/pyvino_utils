@@ -70,5 +70,5 @@ coverage: clean build-image ## check code coverage quickly with the default Pyth
 			coverage report -m && \
 			coverage html"
 
-view-coverage:
+view-coverage: ## View generated coverage on firefox
 	@firefox htmlcov/index.html
