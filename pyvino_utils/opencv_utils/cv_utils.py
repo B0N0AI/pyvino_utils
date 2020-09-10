@@ -33,6 +33,22 @@ def add_text_to_image(
     )
 
 
+def get_semantic_mask(processed_output):
+    """
+    Given an input image size and processed output for a semantic mask,
+
+    Returns
+    -------
+    mask: np.ndarray
+        masks able to be combined with the original image.
+    """
+    # Create an empty array for other color channels of mask
+    empty = np.zeros(processed_output.shape)
+    # Stack to make a mask where anomalies are detected
+    mask = np.dstack((empty, processed_output, empty))
+    return mask
+
+
 # WIP
 class Contours:
     _first_frame = None
