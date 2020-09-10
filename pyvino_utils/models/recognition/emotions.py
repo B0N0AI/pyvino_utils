@@ -1,13 +1,13 @@
-import math
+import time
 
 import cv2
 import numpy as np
 
-from ..openvino_base.base_model import Base, InvalidModel
+from ..openvino_base.base_model import Base
 
 
-class HumanPoseEstimation(Base):
-    """Class for the Human Pose Estimation Model."""
+class Emotions(Base):
+    """Class for the Emotions Recognition Model."""
 
     def __init__(
         self,
@@ -22,9 +22,9 @@ class HumanPoseEstimation(Base):
             model_name, source_width, source_height, device, threshold, extensions,
         )
 
-    def preprocess_output(self, inference_results, image, show_bbox):
+    def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         pass
 
     @staticmethod
-    def draw_output(coords, image):
+    def draw_output(coords, image, **kwargs):
         pass

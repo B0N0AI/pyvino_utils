@@ -3,6 +3,7 @@ import os
 
 import cv2
 from loguru import logger
+
 from tqdm import tqdm
 
 __all__ = ["InputFeeder"]

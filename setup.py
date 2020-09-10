@@ -18,9 +18,7 @@ AUTHOR = "Mpho Mphego"
 DESCRIPTION = "Simplfied openvino models Python implementation"
 EMAIL = "mpho@mphomphego.co.za"
 NAME = "pyvino_utils"
-REQUIRED = [
-    "loguru", "tqdm", "matplotlib", "numpy"
-]
+REQUIRED = ["loguru", "tqdm", "matplotlib", "numpy"]
 
 EXTRAS = {
     "dev": ["twine", "black", "flake8", "isort", "pip", "twine", "wheel"],

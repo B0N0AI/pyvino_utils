@@ -5,7 +5,7 @@ from ..openvino_base.base_model import Base
 
 
 class FacialLandmarks(Base):
-    """Class for the Facial Landmarks Detection Model."""
+    """Class for the Facial Landmarks Recognition Model."""
 
     def __init__(
         self,

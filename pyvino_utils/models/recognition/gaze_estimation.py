@@ -7,7 +7,7 @@ from ..openvino_base.base_model import Base
 
 
 class GazeEstimation(Base):
-    """Class for the Gaze Estimation Detection Model."""
+    """Class for the Gaze Estimation Recognition Model."""
 
     def __init__(
         self,
