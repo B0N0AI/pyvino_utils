@@ -37,6 +37,7 @@ class HeadPoseEstimation(Base):
             name: "angle_r_fc", shape: [1, 1] - Estimated roll (in degrees).
 
         """
+        results = {}
         if len(inference_results) != 3:
             msg = (
                 f"The model:{self.model_structure} does not contain expected output "
@@ -47,9 +48,11 @@ class HeadPoseEstimation(Base):
 
         output_layer_names = ["yaw", "pitch", "roll"]
         flattened_predictions = np.vstack(inference_results).ravel()
-        head_pose_angles = dict(zip(output_layer_names, flattened_predictions))
+        results["head_pose_angles"] = dict(
+            zip(output_layer_names, flattened_predictions)
+        )
         if show_bbox:
-            self.draw_output(head_pose_angles, image)
+            self.draw_output(results, image)
 
         return head_pose_angles, image
 

@@ -5,11 +5,9 @@ import numpy as np
 
 from ..openvino_base.base_model import Base
 
-GENDER = ["Female", "Male"]
 
-
-class AgeGender(Base):
-    """Class for the Age Gender Recognition Model."""
+class TextRecognition(Base):
+    """Class for the Text Recognition Model."""
 
     def __init__(
         self,
@@ -26,13 +24,6 @@ class AgeGender(Base):
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         results = {}
-        age_conv3 = np.squeeze(inference_results[0])
-        gender_prob = np.squeeze(inference_results[1])
-
-        results["gender"] = GENDER[np.argmax(gender_prob)]
-        results["age"] = int(np.round(age_conv3 * 100))
-        if show_bbox:
-            self.draw_output(results, image)
         return results, image
 
     @staticmethod

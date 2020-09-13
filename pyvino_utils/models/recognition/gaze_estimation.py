@@ -23,6 +23,7 @@ class GazeEstimation(Base):
         )
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
+        results = {}
         gaze_vector = dict(zip(["x", "y", "z"], np.vstack(inference_results).ravel()))
 
         # TODO: Figure out why I had to comment this code out?
@@ -36,7 +37,10 @@ class GazeEstimation(Base):
         # coords["y"] = gaze_vector["y"] * cos_theta - gaze_vector["x"] * sin_theta
         if show_bbox:
             self.draw_output(gaze_vector, image, **kwargs)
-        return gaze_vector, image
+
+        results["Gaze_Vector"] = gaze_vector
+
+        return results, image
 
     @staticmethod
     def draw_output(coords, image, **kwargs):

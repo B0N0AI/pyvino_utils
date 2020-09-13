@@ -3,6 +3,7 @@ import os
 
 import cv2
 from loguru import logger
+from vidstab.VidStab import VidStab
 
 from tqdm import tqdm
 
@@ -45,6 +46,7 @@ class InputFeeder:
         except AssertionError:
             self._input_type = ""
         self._progress_bar = None
+        self._video_stabilizer = VidStab()
         self.load_feed(cam_input)
 
     def load_feed(self, cam_input):
@@ -109,6 +111,12 @@ class InputFeeder:
             thickness,
         )
 
+    @staticmethod
+    def add_text(text, image, position, font_size=0.75, color=(255, 255, 255)):
+        cv2.putText(
+            image, text, position, cv2.FONT_HERSHEY_COMPLEX, font_size, color, 1,
+        )
+
     def show(self, frame, frame_name="video"):
         cv2.imshow(frame_name, frame)
 
@@ -122,7 +130,9 @@ class InputFeeder:
         )
         return out_video
 
-    def next_frame(self, quit_key="q", progress=True):
+    def next_frame(
+        self, quit_key="q", progress=True, smoothing_window=30, stabilize_video=False
+    ):
         """Returns the next image from either a video file or webcam."""
         while self.cap.isOpened():
             if progress:
@@ -133,6 +143,11 @@ class InputFeeder:
 
             if not flag:
                 break
+            if stabilize_video:
+                # Pass frame to stabilizer even if frame is None
+                frame = stabilizer.stabilize_frame(
+                    input_frame=frame, smoothing_window=smoothing_window
+                )
             yield frame
 
             key = cv2.waitKey(1) & 0xFF
