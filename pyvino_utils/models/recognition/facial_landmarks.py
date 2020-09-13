@@ -129,19 +129,21 @@ class FacialLandmarks(Base):
                 "mouth_coords": {"mouth_coords": [left_part_mouth, right_part_mouth]},
             }
 
-        results = {"face_landmarks": face_landmarks, "image": image}
+        results["face_landmarks"] = face_landmarks
 
         if show_bbox:
-            self.draw_output(image, face_landmarks)
-        return results
+            self.draw_output(results, image)
+        return results, image
 
     @staticmethod
-    def draw_output(image, face_landmarks, radius=20, color=(0, 0, 255), thickness=2):
+    def draw_output(results, image, radius=20, color=(0, 0, 255), thickness=2):
         """Draw a circle around ROI"""
-        for landmark in face_landmarks:
-            if landmark == "eyes_coords":
-                for eye, coords in face_landmarks["eyes_coords"].items():
-                    if "point" in eye:
-                        cv2.circle(
-                            image, (coords[0], coords[1]), radius, color, thickness,
-                        )
+        pass
+        # TODO: Fix this for the handle the 2 different types of landmarks.
+        # for landmark in face_landmarks:
+        #     if landmark == "eyes_coords":
+        #         for eye, coords in face_landmarks["eyes_coords"].items():
+        #             if "point" in eye:
+        #                 cv2.circle(
+        #                     image, (coords[0], coords[1]), radius, color, thickness,
+        #                 )

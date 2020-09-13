@@ -78,7 +78,9 @@ class Base(ABC):
                     f"Using an old version of OpenVINO, "
                     f"Please update it to version: {get_version()}!"
                 )
-                model = IENetwork(model=self.model_structure, weights=self.model_weights)
+                model = IENetwork(
+                    model=self.model_structure, weights=self.model_weights
+                )
         except Exception:
             msg = (
                 "Could not Initialise the network. "
@@ -170,10 +172,19 @@ class Base(ABC):
 
     @staticmethod
     @abstractstaticmethod
-    def draw_output(image):
+    def draw_output(results, image):
         raise NotImplementedError("Please Implement this method")
 
     @abstractmethod
     def preprocess_output(self, inference_results, image, show_bbox=False, **kwargs):
-        """Draw bounding boxes onto the frame."""
+        """Draw bounding boxes onto the frame.
+
+        Returns:
+        --------
+
+        results: dict
+            inference results
+        image: np.ndarray
+            image array
+        """
         raise NotImplementedError("Please Implement this method")
