@@ -26,8 +26,15 @@ class AgeGender(Base):
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         results = {}
-        return results
+        age_conv3 = np.squeeze(inference_results[0])
+        gender_prob = np.squeeze(inference_results[1])
+
+        results["gender"] = GENDER[np.argmax(gender_prob)]
+        results["age"] = int(np.round(age_conv3 * 100))
+        if show_bbox:
+            self.draw_output(results, image)
+        return results, image
 
     @staticmethod
-    def draw_output(coords, image, **kwargs):
+    def draw_output(results, image, **kwargs):
         pass

@@ -37,13 +37,4 @@ class Emotions(Base):
 
     @staticmethod
     def draw_output(results, image, **kwargs):
-
-        cv2.putText(
-            image,
-            f"Emotional State: {results['emotional_state']}",
-            org=(image.shape[1]//4, image.shape[0]//2),
-            fontFace=cv2.FONT_HERSHEY_PLAIN,
-            fontScale=2,
-            color=(0,0,255),
-            thickness=2,
-        )
+        pass
