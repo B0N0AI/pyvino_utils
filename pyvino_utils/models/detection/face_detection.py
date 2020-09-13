@@ -21,6 +21,7 @@ class FaceDetection(Base):
 
     def preprocess_output(self, inference_results, image, show_bbox=False):
         """Draw bounding boxes onto the Face Detection frame."""
+        results = {}
         if not (self._init_image_w and self._init_image_h):
             raise RuntimeError("Initial image width and height cannot be None.")
         if len(inference_results) == 1:
@@ -37,7 +38,8 @@ class FaceDetection(Base):
                 coords.append((xmin, ymin, xmax, ymax))
                 if show_bbox:
                     self.draw_output(image, xmin, ymin, xmax, ymax)
-        return coords, image
+        results["coords"] = coords
+        return results, image
 
     @staticmethod
     def draw_output(
