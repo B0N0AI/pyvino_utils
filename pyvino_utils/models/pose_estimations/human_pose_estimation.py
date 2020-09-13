@@ -29,20 +29,23 @@ class HumanPoseEstimation(Base):
         From: https://docs.openvinotoolkit.org/latest/_models_intel_human_pose_estimation_0001_description_human_pose_estimation_0001.html
         """
         results = {}
-        if kwargs.get("heatmaps"):
-            # Extract only the second blob output (keypoint heatmaps)
-            heatmaps = inference_results.get("Mconv7_stage2_L2")
-            # Resize the heatmap back to the size of the input
-            input_shape = image.shape[:2]
-            out_heatmap = np.zeros([heatmaps.shape[1], input_shape[0], input_shape[1]])
-            results["heatmaps"] = out_heatmap
-            if show_bbox:
-                self.draw_output(results, image)
+        # FIXME: untested logic
+        # if kwargs.get("heatmaps"):
+        #     # Extract only the second blob output (keypoint heatmaps)
+        #     heatmaps = inference_results.get("Mconv7_stage2_L2")
+        #     # Resize the heatmap back to the size of the input
+        #     input_shape = image.shape[:2]
+        #     out_heatmap = np.zeros([heatmaps.shape[1], input_shape[0], input_shape[1]])
+        #     results["heatmaps"] = out_heatmap
+        #     if show_bbox:
+        #         self.draw_output(results, image)
         return results
 
     @staticmethod
     def draw_output(results, image):
-        if results["heatmaps"] is not None:
-            input_shape = image.shape[:2]
-            for idx, _ in enumerate(heatmaps[0]):
-                cv2.resize(heatmaps[0][idx], input_shape[0:2][::-1])
+        pass
+        # FIXME: untested logic
+        # if results.get("heatmaps"):
+        #     input_shape = image.shape[:2]
+        #     for idx, _ in enumerate(heatmaps[0]):
+        #         cv2.resize(heatmaps[0][idx], input_shape[0:2][::-1])
