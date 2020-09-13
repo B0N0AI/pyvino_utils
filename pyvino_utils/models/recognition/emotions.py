@@ -28,13 +28,22 @@ class Emotions(Base):
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         results = {}
         emo_state = np.vstack(inference_results).ravel()
-        results["Emotion_state"] = EMOTION_STATES[np.argmax(results)]
+        results["emotional_state"] = EMOTION_STATES[np.argmax(emo_state)]
 
         if show_bbox:
             self.draw_output(results, image)
 
-        return results
+        return results, image
 
     @staticmethod
     def draw_output(results, image, **kwargs):
-        pass
+
+        cv2.putText(
+            image,
+            f"Emotional State: {results['emotional_state']}",
+            org=(image.shape[1]//4, image.shape[0]//2),
+            fontFace=cv2.FONT_HERSHEY_PLAIN,
+            fontScale=2,
+            color=(0,0,255),
+            thickness=2,
+        )
