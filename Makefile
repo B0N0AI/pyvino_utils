@@ -61,7 +61,7 @@ test: clean build-image ## run tests in docker
 		bash -c $(TEST_CMD)
 
 changelog: ## Generate changelog for current repo
-	docker run -it --rm -v "$(pwd)":/usr/local/src/your-app mmphego/github-changelog
+	docker run -it --rm -v "$(pwd)":/usr/local/src/your-app mmphego/git-changelog-generator
 
 coverage: clean build-image ## check code coverage quickly with the default Python
 	docker run --rm -ti --volume $(CURDIR):/app $(USER)/$(shell basename $(CURDIR)) \
