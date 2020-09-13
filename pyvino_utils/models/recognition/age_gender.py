@@ -5,6 +5,8 @@ import numpy as np
 
 from ..openvino_base.base_model import Base
 
+GENDER = ["Female", "Male"]
+
 
 class AgeGender(Base):
     """Class for the Age Gender Recognition Model."""
@@ -23,7 +25,8 @@ class AgeGender(Base):
         )
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
-        pass
+        results = {}
+        return results
 
     @staticmethod
     def draw_output(coords, image, **kwargs):

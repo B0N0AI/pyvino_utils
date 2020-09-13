@@ -6,6 +6,9 @@ import numpy as np
 from ..openvino_base.base_model import Base
 
 
+EMOTION_STATES = ("neutral", "happy", "sad", "surprise", "anger")
+
+
 class Emotions(Base):
     """Class for the Emotions Recognition Model."""
 
@@ -23,8 +26,15 @@ class Emotions(Base):
         )
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
-        pass
+        results = {}
+        emo_state = np.vstack(inference_results).ravel()
+        results["Emotion_state"] = EMOTION_STATES[np.argmax(results)]
+
+        if show_bbox:
+            self.draw_output(results, image)
+
+        return results
 
     @staticmethod
-    def draw_output(coords, image, **kwargs):
+    def draw_output(results, image, **kwargs):
         pass

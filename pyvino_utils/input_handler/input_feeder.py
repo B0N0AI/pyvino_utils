@@ -109,6 +109,12 @@ class InputFeeder:
             thickness,
         )
 
+    @staticmethod
+    def add_text(text, image, position, font_size=0.75, color=(255, 255, 255)):
+        cv2.putText(
+            image, text, position, cv2.FONT_HERSHEY_COMPLEX, font_size, color, 1,
+        )
+
     def show(self, frame, frame_name="video"):
         cv2.imshow(frame_name, frame)
 

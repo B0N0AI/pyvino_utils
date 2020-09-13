@@ -23,7 +23,9 @@ class VehicleAttrs(Base):
         )
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
-        pass
+        results = {}
+
+        return results
 
     @staticmethod
     def draw_output(coords, image, **kwargs):

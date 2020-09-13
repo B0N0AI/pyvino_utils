@@ -136,7 +136,7 @@ class Base(ABC):
         # Change data layout from HWC to CHW
         p_frame = transpose_image(p_frame)
 
-        if kwargs["gray_enabled"]:
+        if kwargs.get("gray_enabled"):
             gray_p_frame = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
             gray_p_frame = cv2.GaussianBlur(gray_p_frame, (5, 5), 0)
 
