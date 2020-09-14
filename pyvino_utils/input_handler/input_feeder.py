@@ -3,9 +3,9 @@ import os
 
 import cv2
 from loguru import logger
-from vidstab.VidStab import VidStab
 
 from tqdm import tqdm
+from vidstab.VidStab import VidStab
 
 __all__ = ["InputFeeder"]
 

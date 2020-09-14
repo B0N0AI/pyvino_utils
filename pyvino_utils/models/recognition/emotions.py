@@ -5,7 +5,6 @@ import numpy as np
 
 from ..openvino_base.base_model import Base
 
-
 EMOTION_STATES = ("neutral", "happy", "sad", "surprise", "anger")
 
 
