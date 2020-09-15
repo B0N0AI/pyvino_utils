@@ -1,4 +1,5 @@
 import unittest
+
 from pyvino_utils import InputFeeder
 
 

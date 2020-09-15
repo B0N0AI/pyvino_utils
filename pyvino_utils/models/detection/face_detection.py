@@ -45,7 +45,7 @@ class FaceDetection(Base):
                 bbox_coord.append((xmin, ymin, xmax, ymax))
                 if show_bbox:
                     self.draw_output(image, xmin, ymin, xmax, ymax)
-        results['image'] = image
+        results["image"] = image
         results["bbox_coord"] = bbox_coord
         return results
 

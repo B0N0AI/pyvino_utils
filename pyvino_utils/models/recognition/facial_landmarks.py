@@ -138,7 +138,7 @@ class FacialLandmarks(Base):
             }
 
         results["face_landmarks"] = face_landmarks
-        results['image'] = image
+        results["image"] = image
         if show_bbox:
             self.draw_output(results, image)
         return results

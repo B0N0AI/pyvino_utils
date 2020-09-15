@@ -47,7 +47,7 @@ class VehicleAttrs(Base):
         # results["output_type"] = output_type
         if show_bbox:
             self.draw_output(image, results)
-        results['image'] = image
+        results["image"] = image
         return results
 
     @staticmethod

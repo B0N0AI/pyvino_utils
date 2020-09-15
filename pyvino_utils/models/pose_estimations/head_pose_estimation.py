@@ -58,7 +58,7 @@ class HeadPoseEstimation(Base):
         results["head_pose_angles"] = dict(zip(output_layer_names, flattened_predictions))
         if show_bbox:
             self.draw_output(results, image)
-        results['image'] = image
+        results["image"] = image
         return results
 
     @staticmethod

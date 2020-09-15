@@ -38,7 +38,7 @@ class Emotions(Base):
 
         if show_bbox:
             self.draw_output(results, image)
-        results['image'] = image
+        results["image"] = image
         return results
 
     @staticmethod

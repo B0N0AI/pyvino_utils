@@ -32,7 +32,7 @@ class TextRecognition(Base):
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         results = {}
         # Do stuff
-        results['image'] = image
+        results["image"] = image
         return results
 
     @staticmethod

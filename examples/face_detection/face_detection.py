@@ -7,7 +7,9 @@ from pyvino_utils.models.detection import face_detection
 
 
 def arg_parser():
-    parser = argparse.ArgumentParser(description="A simple OpenVINO based Face Detection running on CPU.")
+    parser = argparse.ArgumentParser(
+        description="A simple OpenVINO based Face Detection running on CPU."
+    )
     parser.add_argument("-i", "--input", help="Video or image input.", required=True)
     parser.add_argument(
         "-m", "--model", help="Face detection model name (no extension).", required=True
