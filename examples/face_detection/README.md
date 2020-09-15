@@ -30,6 +30,7 @@ make run-bootstrap
 ```
 
 The command above does the following:
+
 - Builds a docker image based on the user and current working directory. 
     eg: `mmphego/face_detection`
 - Downloads the models that OpenVINO uses for inference.
@@ -37,4 +38,5 @@ The command above does the following:
 - Runs the application inside the pre-built docker image.
 
 ### Demo
-![Peek-2020-09-15-13-35(1)](https://user-images.githubusercontent.com/7910856/93207047-a2488380-f75a-11ea-9b6f-8a77a4a5bdb3.gif)
+
+![Peek 2020-09-15 17-44 mp4](https://user-images.githubusercontent.com/7910856/93233801-c9637d00-f77b-11ea-97a6-3ad6b5890b26.gif)
