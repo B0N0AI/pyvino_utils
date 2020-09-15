@@ -19,7 +19,7 @@ class AgeGender(Base):
         device="CPU",
         threshold=0.60,
         extensions=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(
             model_name,
@@ -28,7 +28,7 @@ class AgeGender(Base):
             device,
             threshold,
             extensions,
-            **kwargs
+            **kwargs,
         )
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
@@ -44,4 +44,13 @@ class AgeGender(Base):
 
     @staticmethod
     def draw_output(results, image, **kwargs):
-        pass
+        w, h = 15, abs(image.shape[0] - 100)
+        cv2.putText(
+            image,
+            f"Age: {results['age']}, Gender: {results['gender']}",
+            (w, h),
+            cv2.FONT_HERSHEY_SIMPLEX,
+            1,
+            (0, 255, 0),
+            2,
+        )

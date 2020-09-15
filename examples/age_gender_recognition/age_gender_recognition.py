@@ -3,14 +3,14 @@
 import argparse
 
 from pyvino_utils import InputFeeder
-from pyvino_utils.models.detection import face_detection
+from pyvino_utils.models.recognition import age_gender
 
 
 def arg_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-i", "--input", help="Video or image input.", required=True)
+    parser.add_argument("-i", "--input", help="Video or Image input.", required=True)
     parser.add_argument(
-        "-m", "--model", help="Face detection model name (no extension).", required=True
+        "-m", "--model", help="model name (without an extension).", required=True
     )
     parser.add_argument(
         "-b", "--show-bbox", action="store_true", help="Show bounding box."
@@ -20,12 +20,13 @@ def arg_parser():
 
 def main(args):
     input_feed = InputFeeder(input_feed=args.input)
-    face_detector = face_detection.FaceDetection(
+    age_gender_detector = age_gender.AgeGender(
         model_name=args.model, input_feed=input_feed
     )
 
     for frame in input_feed.next_frame(progress=False):
-        inference_results = face_detector.predict(frame, show_bbox=args.show_bbox)
+        inference_results = age_gender_detector.predict(frame, show_bbox=args.show_bbox)
+        # Do stuff with inference_results.
         if args.show_bbox:
             input_feed.show(frame)
     input_feed.close()
