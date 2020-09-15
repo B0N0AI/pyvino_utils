@@ -15,6 +15,7 @@ class FacialLandmarks(Base):
         device="CPU",
         threshold=0.60,
         extensions=None,
+        **kwargs
     ):
         self._model_type = (
             "landmarks-regression-retail"
@@ -22,12 +23,19 @@ class FacialLandmarks(Base):
             else "facial-landmarks-35-adas"
         )
         super().__init__(
-            model_name, source_width, source_height, device, threshold, extensions,
+            model_name,
+            source_width,
+            source_height,
+            device,
+            threshold,
+            extensions,
+            **kwargs
         )
 
     def preprocess_output(self, inference_results, image, show_bbox=False):
         """Draw bounding boxes onto the Facial Landmarks frame."""
         flattened_predictions = np.vstack(inference_results).ravel()
+        results = {}
         face_h, face_w = image.shape[:2]
 
         if len(flattened_predictions) == 70:

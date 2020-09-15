@@ -19,9 +19,16 @@ class AgeGender(Base):
         device="CPU",
         threshold=0.60,
         extensions=None,
+        **kwargs
     ):
         super().__init__(
-            model_name, source_width, source_height, device, threshold, extensions,
+            model_name,
+            source_width,
+            source_height,
+            device,
+            threshold,
+            extensions,
+            **kwargs
         )
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):

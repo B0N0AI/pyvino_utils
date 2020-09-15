@@ -12,8 +12,7 @@ import pkgutil
 
 from pyvino_utils import __version__, __vino_version__
 from pyvino_utils.input_handler.input_feeder import InputFeeder
-from pyvino_utils.models import (detection, openvino_base, pose_estimations,
-                                 recognition)
+from pyvino_utils.models import detection, openvino_base, pose_estimations, recognition
 from pyvino_utils.opencv_utils import cv_utils
 
 __version__ = __version__.__version__

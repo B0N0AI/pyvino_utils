@@ -17,16 +17,21 @@ class HumanPoseEstimation(Base):
         device="CPU",
         threshold=0.60,
         extensions=None,
+        **kwargs
     ):
         super().__init__(
-            model_name, source_width, source_height, device, threshold, extensions,
+            model_name,
+            source_width,
+            source_height,
+            device,
+            threshold,
+            extensions,
+            **kwargs
         )
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         """
         Handles the output of the Pose Estimation model.
-
-        From: https://docs.openvinotoolkit.org/latest/_models_intel_human_pose_estimation_0001_description_human_pose_estimation_0001.html
         """
         results = {}
         # FIXME: untested logic
