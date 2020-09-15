@@ -7,7 +7,7 @@ from pyvino_utils.models.recognition import age_gender
 
 
 def arg_parser():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="A simple OpenVINO based Age and Gender Recognition running on CPU.")
     parser.add_argument("-i", "--input", help="Video or Image input.", required=True)
     parser.add_argument(
         "-m", "--model", help="model name (without an extension).", required=True

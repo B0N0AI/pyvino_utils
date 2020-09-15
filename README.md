@@ -1,4 +1,4 @@
-# pyvino-utils
+# PyVINO-Utils
 
 [![Build Status](https://img.shields.io/travis/mmphego/pyvino_utils.svg)](https://travis-ci.com/mmphego/pyvino_utils)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43713e0b78f547e8912ff05c9350cffb)](https://app.codacy.com/app/mmphego/pyvino_utils?utm_source=github.com&utm_medium=referral&utm_content=mmphego/pyvino_utils&utm_campaign=Badge_Grade_Dashboard)
@@ -24,14 +24,20 @@ To install `pyvino-utils`, run this command in your terminal:
 
 ```bash
 git clone git://github.com/mmphego/pyvino_utils
-make build
+make build-image
 docker run --rm -ti "$USER/$(basename $PWD)" bash -c \
     "source /opt/intel/openvino/bin/setupvars.sh && \
-    python -c \
-        \"import pyvino_utils; print(f'PyVINO-utils version: {pyvino_utils.__version__}')
-        \"
+    python -c "import pyvino_utils; print(f'PyVINO-utils version: {pyvino_utils.__version__}')"
     "
 ```
+
+# Examples
+
+See usage examples:
+
+- [Face Detection](examples/age_gender_recognition)
+- [Age Gender Recognition](examples/age_gender_recognition)
+
 
 # Feedback
 
