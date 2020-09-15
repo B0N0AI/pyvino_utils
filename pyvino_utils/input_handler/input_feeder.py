@@ -145,7 +145,7 @@ class InputFeeder:
                 break
             if stabilize_video:
                 # Pass frame to stabilizer even if frame is None
-                frame = stabilizer.stabilize_frame(
+                frame = self._video_stabilizer.stabilize_frame(
                     input_frame=frame, smoothing_window=smoothing_window
                 )
             yield frame

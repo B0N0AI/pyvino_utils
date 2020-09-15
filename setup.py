@@ -18,11 +18,18 @@ AUTHOR = "Mpho Mphego"
 DESCRIPTION = "Simplfied openvino models Python implementation"
 EMAIL = "mpho@mphomphego.co.za"
 NAME = "pyvino_utils"
-REQUIRED = ["loguru", "tqdm", "matplotlib", "numpy"]
+REQUIRED = ["loguru", "matplotlib", "numpy", "tqdm", "vidstab"]
 
 EXTRAS = {
-    "dev": ["twine", "black", "flake8", "isort", "pip", "twine", "wheel"],
-    "testing": ["coverage", "pytest", "tox"],
+    "dev": [
+        "black",
+        "coverage",
+        "flake8",
+        "isort",
+        "pytest",
+        "pytest-cov",
+        "pytest-runner",
+    ],
 }
 
 REQUIRES_PYTHON = ">=3.6.0"

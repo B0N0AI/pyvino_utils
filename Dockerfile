@@ -1,6 +1,4 @@
 FROM mmphego/intel-openvino
 WORKDIR /app
 COPY . /app
-RUN pip install -r requirements-dev.txt
-RUN pip install -r requirements.txt
-RUN pip install .
+RUN pip install .[dev]

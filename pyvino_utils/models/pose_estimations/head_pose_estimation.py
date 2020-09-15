@@ -17,9 +17,16 @@ class HeadPoseEstimation(Base):
         device="CPU",
         threshold=0.60,
         extensions=None,
+        **kwargs,
     ):
         super().__init__(
-            model_name, source_width, source_height, device, threshold, extensions,
+            model_name,
+            source_width,
+            source_height,
+            device,
+            threshold,
+            extensions,
+            **kwargs,
         )
 
     def preprocess_output(self, inference_results, image, show_bbox):
@@ -48,22 +55,20 @@ class HeadPoseEstimation(Base):
 
         output_layer_names = ["yaw", "pitch", "roll"]
         flattened_predictions = np.vstack(inference_results).ravel()
-        results["head_pose_angles"] = dict(
-            zip(output_layer_names, flattened_predictions)
-        )
+        results["head_pose_angles"] = dict(zip(output_layer_names, flattened_predictions))
         if show_bbox:
             self.draw_output(results, image)
 
-        return head_pose_angles, image
+        return results, image
 
     @staticmethod
-    def draw_output(coords, image):
+    def draw_output(results, image):
         """Draw head pose estimation on frame.
 
         Ref:
         https://github.com/natanielruiz/deep-head-pose/blob/master/code/utils.py#L86+L117
         """
-        yaw, pitch, roll = coords.values()
+        yaw, pitch, roll = results["head_pose_angles"].values()
 
         yaw = -(yaw * np.pi / 180)
         pitch = pitch * np.pi / 180

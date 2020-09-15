@@ -32,6 +32,7 @@ class Base(ABC):
         device="CPU",
         threshold=0.60,
         extensions=None,
+        **kwargs,
     ):
         self.model_weights = f"{model_name}.bin"
         self.model_structure = f"{model_name}.xml"
@@ -54,11 +55,18 @@ class Base(ABC):
         self.input_shape = self.model.inputs[self.input_name].shape
         self.output_name = next(iter(self.model.outputs))
         self.output_shape = self.model.outputs[self.output_name].shape
-        self._init_image_w = source_width
-        self._init_image_h = source_height
+        self._update_source_resolution(source_width, source_height, **kwargs)
         self.exec_network = None
         self.perf_stats = {}
         self.load_model()
+
+    def _update_source_resolution(self, source_width, source_height, **kwargs):
+        if kwargs.get("input_feed"):
+            self._init_image_h = kwargs.get("input_feed").source_height
+            self._init_image_w = kwargs.get("input_feed").source_width
+        else:
+            self._init_image_w = source_width
+            self._init_image_h = source_height
 
     @property
     def model_size(self):
@@ -78,9 +86,7 @@ class Base(ABC):
                     f"Using an old version of OpenVINO, "
                     f"Please update it to version: {get_version()}!"
                 )
-                model = IENetwork(
-                    model=self.model_structure, weights=self.model_weights
-                )
+                model = IENetwork(model=self.model_structure, weights=self.model_weights)
         except Exception:
             msg = (
                 "Could not Initialise the network. "
