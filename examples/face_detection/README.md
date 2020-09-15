@@ -37,3 +37,4 @@ The command above does the following:
 - Runs the application inside the pre-built docker image.
 
 ### Demo
+![Peek-2020-09-15-13-35(1)](https://user-images.githubusercontent.com/7910856/93207047-a2488380-f75a-11ea-9b6f-8a77a4a5bdb3.gif)

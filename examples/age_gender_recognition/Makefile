@@ -62,7 +62,8 @@ download-models: build  ## Download models for use
 	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
 	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
 	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
-	bash -c "/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/downloader.py --list models.lst -o models"
+	bash -c "/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/downloader.py \
+			--list models.lst -o models --precision FP16"
 
 run-bootstrap: build-cached download-models ## Run bootstrap example inside the container.
 	xhost +;
