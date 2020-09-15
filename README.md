@@ -35,9 +35,8 @@ docker run --rm -ti "$USER/$(basename $PWD)" bash -c \
 
 See usage examples:
 
-- [Face Detection](examples/age_gender_recognition)
+- [Face Detection](examples/face_detection)
 - [Age Gender Recognition](examples/age_gender_recognition)
-
 
 # Feedback
 
