@@ -19,10 +19,10 @@ def arg_parser():
 def main(args):
     input_feed = InputFeeder(input_feed=args.input)
     face_detector = face_detection.FaceDetection(
-        model_name=args.model
+        model_name=args.model, input_feed=input_feed
     )
     for frame in input_feed.next_frame():
-        predict_time, face_bboxes = face_detector.predict(
+        inference_results = face_detector.predict(
             frame, show_bbox=args.show_bbox
         )
     input_feed.close()
