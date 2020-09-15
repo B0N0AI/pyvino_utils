@@ -102,14 +102,18 @@ class InputFeeder:
             width, height = (self.source_width // 2, self.source_height // 2)
         return cv2.resize(frame, (width, height))
 
-    def draw_center_cirle(self, frame, radius=100, color=(0, 255, 0), thickness=5):
+    def draw_cirle(
+        self, frame, width, height, radius=100, color=(0, 255, 0), thickness=5
+    ):
+        x1 = width - radius
+        y1 = height - radius
+        x2 = width + radius
+        y2 = height + radius
         cv2.circle(
-            frame,
-            (self.source_width // 2, self.source_height // 2,),
-            radius,
-            color,
-            thickness,
+            frame, (width, height), radius, color, thickness,
         )
+        return (x1, y1), (x2, y2)
+
 
     @staticmethod
     def add_text(text, image, position, font_size=0.75, color=(255, 255, 255)):
