@@ -24,6 +24,28 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
+clean: clean-build clean-docker clean-pyc clean-test ## Remove all build, test, coverage and Python artifacts
+
+clean-docker:  ## Remove docker image
+	docker rmi $(OPENVINO_DOCKER_IMAGE)
+
+clean-build: ## Remove build artifacts
+	rm -fr build/
+	rm -fr dist/
+	rm -fr .eggs/
+	find . -name '*.egg-info' -exec rm -fr {} +
+	find . -name '*.egg' -exec rm -f {} +
+
+clean-pyc: ## Remove Python file artifacts
+	find . -name '*.pyc' -exec rm -f {} +
+	find . -name '*.pyo' -exec rm -f {} +
+	find . -name '__pycache__' -exec rm -fr {} +
+
+clean-test: ## Remove test and coverage artifacts
+	rm -f .coverage
+	rm -fr htmlcov/
+	rm -fr .pytest_cache
+
 formatter: ## Format style with black
 	isort -rc .
 	black -l 90 .
@@ -32,6 +54,9 @@ lint: ## Check style with flake8
 	flake8 --max-line-length 90 .
 
 build:  ## Build docker image from file.
+	docker build --no-cache -t $(OPENVINO_DOCKER_IMAGE) .
+
+build-cached:  ## Build cached docker image from file.
 	docker build -t $(OPENVINO_DOCKER_IMAGE) .
 
 download-models: build  ## Download models for use
@@ -40,14 +65,24 @@ download-models: build  ## Download models for use
 	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
 	bash -c "/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/downloader.py --list models.lst -o models"
 
-run-example: build ## Run example inside the container.
+run-bootstrap: build-cached download-models ## Run bootstrap example inside the container.
 	xhost +;
 	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
 	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
 	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
 	bash -c "source /opt/intel/openvino/bin/setupvars.sh && \
 			python face_detection.py \
-				--model models/models/intel/face-detection-adas-binary-0001/FP32-INT1/face-detection-adas-0001 \
+				--model models/intel/face-detection-adas-binary-0001/FP32-INT1/face-detection-adas-binary-0001 \
 				-i cam \
 				--show-bbox"
 
+run:  ## Run example
+	xhost +;
+	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
+	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
+	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
+	bash -c "source /opt/intel/openvino/bin/setupvars.sh && \
+			python face_detection.py \
+				--model models/intel/face-detection-adas-binary-0001/FP32-INT1/face-detection-adas-binary-0001 \
+				-i cam \
+				--show-bbox"
