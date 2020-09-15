@@ -35,7 +35,7 @@ build-cached-image:  ## Build cached docker image from file.
 clean: clean-build clean-docker clean-pyc clean-test ## Remove all build, test, coverage and Python artefacts
 
 clean-docker:  ## Remove docker image
-	docker rmi $(OPENVINO_DOCKER_IMAGE)
+	docker rmi $(OPENVINO_DOCKER_IMAGE) || true
 
 clean-build: ## Remove build artefacts
 	rm -fr build/
