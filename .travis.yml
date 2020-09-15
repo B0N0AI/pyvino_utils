@@ -13,4 +13,4 @@ notifications:
   email: change
 
 script:
-  - make test
+  - make tests

@@ -153,12 +153,14 @@ class Base(ABC):
     def predict(self, image, request_id=0, show_bbox=False, **kwargs):
         if not isinstance(image, np.ndarray):
             raise InvalidImageArray("Image not parsed correctly.")
-
-        p_image, gray_p_frame = self.preprocess_input(image, **kwargs)
+        results = {}
+        p_frame, gray_p_frame = self.preprocess_input(image, **kwargs)
+        results["processed_BGR_frame"] = p_frame
+        results["processed_Gray_frame"] = gray_p_frame
 
         predict_start_time = time.time()
         self.exec_network.start_async(
-            request_id=request_id, inputs={self.input_name: p_image}
+            request_id=request_id, inputs={self.input_name: p_frame}
         )
         status = self.exec_network.requests[request_id].wait(-1)
         if status == 0:
@@ -171,10 +173,12 @@ class Base(ABC):
                 request_id
             ].get_perf_counts()
             predict_end_time = float(time.time() - predict_start_time) * 1000
-            bbox, _ = self.preprocess_output(
+            process_output = self.preprocess_output(
                 pred_result, image, show_bbox=show_bbox, **kwargs
             )
-            return (predict_end_time, bbox, gray_p_frame)
+            results["predict_end_time"] = predict_end_time
+            results["process_output"] = process_output
+            return results
 
     @staticmethod
     @abstractstaticmethod
