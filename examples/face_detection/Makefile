@@ -1,0 +1,53 @@
+.ONESHELL:
+
+SHELL := /bin/bash
+DATE_ID := $(shell date +"%y.%m.%d")
+
+OPENVINO_DOCKER_IMAGE = "$(USER)/$(shell basename $(CURDIR))"
+# Get package name from pwd
+SOURCE_DIR = source /opt/intel/openvino/bin/setupvars.sh
+
+.DEFAULT_GOAL := help
+
+define PRINT_HELP_PYSCRIPT
+import re, sys
+
+for line in sys.stdin:
+	match = re.match(r'^([a-zA-Z_-]+):.*?## (.*)$$', line)
+	if match:
+		target, help = match.groups()
+		print("%-20s %s" % (target, help))
+endef
+export PRINT_HELP_PYSCRIPT
+
+
+help:
+	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
+
+formatter: ## Format style with black
+	isort -rc .
+	black -l 90 .
+
+lint: ## Check style with flake8
+	flake8 --max-line-length 90 .
+
+build:  ## Build docker image from file.
+	docker build -t $(OPENVINO_DOCKER_IMAGE) .
+
+download-models: build  ## Download models for use
+	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
+	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
+	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
+	bash -c "/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/downloader.py --list models.lst -o models"
+
+run-example: build ## Run example inside the container.
+	xhost +;
+	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
+	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
+	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
+	bash -c "source /opt/intel/openvino/bin/setupvars.sh && \
+			python face_detection.py \
+				--model models/models/intel/face-detection-adas-binary-0001/FP32-INT1/face-detection-adas-0001 \
+				-i cam \
+				--show-bbox"
+
