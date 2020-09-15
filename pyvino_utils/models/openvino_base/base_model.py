@@ -173,11 +173,11 @@ class Base(ABC):
                 request_id
             ].get_perf_counts()
             predict_end_time = float(time.time() - predict_start_time) * 1000
-            bbox, _ = self.preprocess_output(
+            process_output = self.preprocess_output(
                 pred_result, image, show_bbox=show_bbox, **kwargs
             )
             results["predict_end_time"] = predict_end_time
-            results["bbox"] = bbox
+            results["process_output"] = process_output
             return results
 
     @staticmethod

@@ -34,7 +34,7 @@ class FaceDetection(Base):
         if len(inference_results) == 1:
             inference_results = inference_results[0]
 
-        coords = []
+        bbox_coord = []
         for box in inference_results[0][0]:  # Output shape is 1x1xNx7
             conf = box[2]
             if conf >= self.threshold:
@@ -42,11 +42,11 @@ class FaceDetection(Base):
                 ymin = int(box[4] * self._init_image_h)
                 xmax = int(box[5] * self._init_image_w)
                 ymax = int(box[6] * self._init_image_h)
-                coords.append((xmin, ymin, xmax, ymax))
+                bbox_coord.append((xmin, ymin, xmax, ymax))
                 if show_bbox:
                     self.draw_output(image, xmin, ymin, xmax, ymax)
-        results["coords"] = coords
-        return results, image
+        results["bbox_coord"] = bbox_coord
+        return results
 
     @staticmethod
     def draw_output(
