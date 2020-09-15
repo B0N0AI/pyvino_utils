@@ -2,8 +2,8 @@
 
 | Details            |              |
 |-----------------------|---------------|
-| Programming Language: |  Python 3.6+ |
-| Intel OpenVINO ToolKit: | 2020.2.120 |
+| Programming Language: |  [![Python 3.6](https://img.shields.io/badge/python-3.6+-blue.svg)](https://www.python.org/downloads/release/python-360/) |
+| Intel OpenVINO ToolKit: |[![OpenVINO 2020.2](https://img.shields.io/badge/openvino-2020.2-blue.svg)](https://software.intel.com/content/www/us/en/develop/tools/openvino-toolkit/choose-download.html)|
 | Docker (Ubuntu OpenVINO pre-installed): | [mmphego/intel-openvino](https://hub.docker.com/r/mmphego/intel-openvino)|
 | Hardware Used: | Intel(R) Core(TM) i7-8750H CPU @ 2.20GHz |
 | Device: | CPU |
