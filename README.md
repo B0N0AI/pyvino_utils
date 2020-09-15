@@ -13,8 +13,7 @@ Simplified OpenVINO models Python implementation.
 To install `pyvino-utils`, run this command in your terminal:
 
 ```python
-    pip install git+https://github.com/mmphego/pyvino_utils.git
-    
+pip install git+https://github.com/mmphego/pyvino_utils.git
 ```
 
 **NOTE:** This assumes that the [Intel OpenVINO Toolkit version: 2020.2.120](https://software.intel.com/content/www/us/en/develop/tools/openvino-toolkit/choose-download.html) is installed and other dependencies. 

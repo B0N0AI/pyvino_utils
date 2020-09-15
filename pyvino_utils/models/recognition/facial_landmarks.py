@@ -138,10 +138,10 @@ class FacialLandmarks(Base):
             }
 
         results["face_landmarks"] = face_landmarks
-
+        results['image'] = image
         if show_bbox:
             self.draw_output(results, image)
-        return results, image
+        return results
 
     @staticmethod
     def draw_output(results, image, radius=20, color=(0, 0, 255), thickness=2):

@@ -46,8 +46,8 @@ class GazeEstimation(Base):
             self.draw_output(gaze_vector, image, **kwargs)
 
         results["Gaze_Vector"] = gaze_vector
-
-        return results, image
+        results['image'] = image
+        return results
 
     @staticmethod
     def draw_output(coords, image, **kwargs):

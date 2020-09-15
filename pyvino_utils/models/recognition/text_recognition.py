@@ -31,7 +31,9 @@ class TextRecognition(Base):
 
     def preprocess_output(self, inference_results, image, show_bbox, **kwargs):
         results = {}
-        return results, image
+        # Do stuff
+        results['image'] = image
+        return results
 
     @staticmethod
     def draw_output(results, image, **kwargs):

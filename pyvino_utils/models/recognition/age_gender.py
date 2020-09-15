@@ -38,9 +38,10 @@ class AgeGender(Base):
 
         results["gender"] = GENDER[np.argmax(gender_prob)]
         results["age"] = int(np.round(age_conv3 * 100))
+        results["image"] = image
         if show_bbox:
             self.draw_output(results, image)
-        return results, image
+        return results
 
     @staticmethod
     def draw_output(results, image, **kwargs):

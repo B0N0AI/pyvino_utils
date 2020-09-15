@@ -38,8 +38,8 @@ class Emotions(Base):
 
         if show_bbox:
             self.draw_output(results, image)
-
-        return results, image
+        results['image'] = image
+        return results
 
     @staticmethod
     def draw_output(results, image, **kwargs):
