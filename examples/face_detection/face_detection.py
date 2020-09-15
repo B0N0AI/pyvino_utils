@@ -8,10 +8,10 @@ def arg_parser():
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--input", help="Video or image input.", required=True)
     parser.add_argument(
-        "-m", "--model", help="Face detection model name (no extension)", required=True
+        "-m", "--model", help="Face detection model name (no extension).", required=True
     )
     parser.add_argument(
-        "-b", "--show-bbox", action="store_true", help="show bonding box"
+        "-b", "--show-bbox", action="store_true", help="Show bounding box."
     )
     return parser.parse_args()
 
@@ -21,10 +21,11 @@ def main(args):
     face_detector = face_detection.FaceDetection(
         model_name=args.model, input_feed=input_feed
     )
-    for frame in input_feed.next_frame():
-        inference_results = face_detector.predict(
-            frame, show_bbox=args.show_bbox
-        )
+
+    for frame in input_feed.next_frame(progress=False):
+        inference_results = face_detector.predict(frame, show_bbox=args.show_bbox)
+        if args.show_bbox:
+            input_feed.show(frame)
     input_feed.close()
 
 

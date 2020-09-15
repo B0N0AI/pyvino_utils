@@ -1,8 +1,7 @@
 .ONESHELL:
 
 SHELL := /bin/bash
-DATE_ID := $(shell date +"%y.%m.%d")
-
+# Name of docker image to be built.
 OPENVINO_DOCKER_IMAGE = "$(USER)/$(shell basename $(CURDIR))"
 # Get package name from pwd
 SOURCE_DIR = source /opt/intel/openvino/bin/setupvars.sh
@@ -24,7 +23,7 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-docker clean-pyc clean-test ## Remove all build, test, coverage and Python artifacts
+clean: clean-build clean-docker clean-pyc clean-test ## Remove all build, test, coverage and Python artefacts
 
 clean-docker:  ## Remove docker image
 	docker rmi $(OPENVINO_DOCKER_IMAGE)
@@ -73,7 +72,7 @@ run-bootstrap: build-cached download-models ## Run bootstrap example inside the 
 	bash -c "source /opt/intel/openvino/bin/setupvars.sh && \
 			python face_detection.py \
 				--model models/intel/face-detection-adas-binary-0001/FP32-INT1/face-detection-adas-binary-0001 \
-				-i cam \
+				--input cam \
 				--show-bbox"
 
 run:  ## Run example
@@ -84,5 +83,5 @@ run:  ## Run example
 	bash -c "source /opt/intel/openvino/bin/setupvars.sh && \
 			python face_detection.py \
 				--model models/intel/face-detection-adas-binary-0001/FP32-INT1/face-detection-adas-binary-0001 \
-				-i cam \
+				--input cam \
 				--show-bbox"
