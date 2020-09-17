@@ -26,7 +26,7 @@ class FaceDetection(Base):
             **kwargs
         )
 
-    def preprocess_output(self, inference_results, image, show_bbox=False):
+    def preprocess_output(self, inference_results, image, show_bbox=False, **kwargs):
         """Draw bounding boxes onto the Face Detection frame."""
         results = {}
         if not (self._init_image_w and self._init_image_h):
@@ -44,7 +44,7 @@ class FaceDetection(Base):
                 ymax = int(box[6] * self._init_image_h)
                 bbox_coord.append((xmin, ymin, xmax, ymax))
                 if show_bbox:
-                    self.draw_output(image, xmin, ymin, xmax, ymax)
+                    self.draw_output(image, xmin, ymin, xmax, ymax, **kwargs)
         results["image"] = image
         results["bbox_coord"] = bbox_coord
         return results
@@ -62,6 +62,7 @@ class FaceDetection(Base):
         text_color=(255, 255, 255),
         text_scale=2,
         text_thickness=2,
+        **kwargs
     ):
 
         cv2.rectangle(

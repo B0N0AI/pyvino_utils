@@ -29,7 +29,7 @@ class HeadPoseEstimation(Base):
             **kwargs,
         )
 
-    def preprocess_output(self, inference_results, image, show_bbox):
+    def preprocess_output(self, inference_results, image, show_bbox=False, **kwargs):
         """
         Estimate the Head Pose on a cropped face.
 
@@ -57,12 +57,12 @@ class HeadPoseEstimation(Base):
         flattened_predictions = np.vstack(inference_results).ravel()
         results["head_pose_angles"] = dict(zip(output_layer_names, flattened_predictions))
         if show_bbox:
-            self.draw_output(results, image)
+            self.draw_output(results, image, **kwargs)
         results["image"] = image
         return results
 
     @staticmethod
-    def draw_output(results, image):
+    def draw_output(results, image, **kwargs):
         """Draw head pose estimation on frame.
 
         Ref:

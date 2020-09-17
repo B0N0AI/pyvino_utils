@@ -32,7 +32,7 @@ class FacialLandmarks(Base):
             **kwargs
         )
 
-    def preprocess_output(self, inference_results, image, show_bbox=False):
+    def preprocess_output(self, inference_results, image, show_bbox=False, **kwargs):
         """Draw bounding boxes onto the Facial Landmarks frame."""
         flattened_predictions = np.vstack(inference_results).ravel()
         results = {}
@@ -140,11 +140,11 @@ class FacialLandmarks(Base):
         results["face_landmarks"] = face_landmarks
         results["image"] = image
         if show_bbox:
-            self.draw_output(results, image)
+            self.draw_output(results, image, **kwargs)
         return results
 
     @staticmethod
-    def draw_output(results, image, radius=20, color=(0, 0, 255), thickness=2):
+    def draw_output(results, image, radius=20, color=(0, 0, 255), thickness=2, **kwargs):
         """Draw a circle around ROI"""
         pass
         # TODO: Fix this for the handle the 2 different types of landmarks.

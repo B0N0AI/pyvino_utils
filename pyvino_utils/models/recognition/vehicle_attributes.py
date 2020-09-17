@@ -46,7 +46,7 @@ class VehicleAttrs(Base):
         # output_type = np.argmax(output_type)
         # results["output_type"] = output_type
         if show_bbox:
-            self.draw_output(image, results)
+            self.draw_output(image, results, **kwargs)
         results["image"] = image
         return results
 

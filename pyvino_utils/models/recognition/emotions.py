@@ -37,7 +37,7 @@ class Emotions(Base):
         results["emotional_state"] = EMOTION_STATES[np.argmax(emo_state)]
 
         if show_bbox:
-            self.draw_output(results, image)
+            self.draw_output(results, image, **kwargs)
         results["image"] = image
         return results
 

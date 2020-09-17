@@ -40,7 +40,7 @@ class AgeGender(Base):
         results["age"] = int(np.round(age_conv3 * 100))
         results["image"] = image
         if show_bbox:
-            self.draw_output(results, image)
+            self.draw_output(results, image, **kwargs)
         return results
 
     @staticmethod

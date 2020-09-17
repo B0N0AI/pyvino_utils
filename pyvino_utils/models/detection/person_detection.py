@@ -27,9 +27,9 @@ class PersonDetection(Base):
             **kwargs
         )
 
-    def preprocess_output(self, inference_results, image, show_bbox):
+    def preprocess_output(self, inference_results, image, show_bbox=False, **kwargs):
         raise NotImplementedError("Method not implemented!")
 
     @staticmethod
-    def draw_output(coords, image):
+    def draw_output(coords, image, **kwargs):
         raise NotImplementedError("Method not implemented!")

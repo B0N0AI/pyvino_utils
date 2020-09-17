@@ -47,7 +47,7 @@ class HumanPoseEstimation(Base):
         return results
 
     @staticmethod
-    def draw_output(results, image):
+    def draw_output(results, image, **kwargs):
         pass
         # FIXME: untested logic
         # if results.get("heatmaps"):

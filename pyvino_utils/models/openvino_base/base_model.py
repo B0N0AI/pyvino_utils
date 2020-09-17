@@ -182,7 +182,7 @@ class Base(ABC):
 
     @staticmethod
     @abstractstaticmethod
-    def draw_output(results, image):
+    def draw_output(results, image, **kwargs):
         raise NotImplementedError("Please Implement this method")
 
     @abstractmethod
