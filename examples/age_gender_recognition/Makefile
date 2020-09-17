@@ -23,7 +23,10 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-clean: clean-build clean-docker clean-pyc clean-test ## Remove all build, test, coverage and Python artefacts
+clean: clean-build clean-docker clean-models clean-pyc clean-test ## Remove all build, test, coverage and Python artefacts
+
+clean-models:  # Remove downloaded models.
+	rm -rf models
 
 clean-docker:  ## Remove docker image
 	docker rmi $(OPENVINO_DOCKER_IMAGE)
@@ -59,17 +62,25 @@ build-cached:  ## Build cached docker image from file.
 	docker build -t $(OPENVINO_DOCKER_IMAGE) .
 
 download-models: build  ## Download models for use
-	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
-	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
-	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
+	docker run --user $(shell id -u):$(shell id -g) --privileged=true --rm -ti \
+	--volume "$(CURDIR)":/app \
+	--env DISPLAY=$(DISPLAY) \
+	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+	--device /dev/snd \
+	--device /dev/video0 \
+	$(OPENVINO_DOCKER_IMAGE) \
 	bash -c "/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/downloader.py \
 			--list models.lst -o models --precision FP16"
 
 run-bootstrap: build-cached download-models ## Run bootstrap example inside the container.
 	xhost +;
-	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
-	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
-	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
+	docker run --privileged=true --rm -ti \
+	--volume "$(CURDIR)":/app \
+	--env DISPLAY=$(DISPLAY) \
+	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+	--device /dev/snd \
+	--device /dev/video0 \
+	$(OPENVINO_DOCKER_IMAGE) \
 	bash -c "source /opt/intel/openvino/bin/setupvars.sh && \
 			python age_gender_recognition.py \
 				--model models/intel/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013 \
@@ -78,9 +89,13 @@ run-bootstrap: build-cached download-models ## Run bootstrap example inside the 
 
 run:  ## Run example
 	xhost +;
-	docker run --rm -ti --volume "$(CURDIR)":/app --env DISPLAY=$(DISPLAY) \
-	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" --device /dev/snd \
-	--device /dev/video0 $(OPENVINO_DOCKER_IMAGE) \
+	docker run --privileged=true --rm -ti \
+	--volume "$(CURDIR)":/app \
+	--env DISPLAY=$(DISPLAY) \
+	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+	--device /dev/snd \
+	--device /dev/video0 \
+	$(OPENVINO_DOCKER_IMAGE) \
 	bash -c "source /opt/intel/openvino/bin/setupvars.sh && \
 			python age_gender_recognition.py \
 				--model models/intel/age-gender-recognition-retail-0013/FP16/age-gender-recognition-retail-0013 \

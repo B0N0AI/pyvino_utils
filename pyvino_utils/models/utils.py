@@ -22,6 +22,8 @@ import downloader  # isort:skip
 
 def download_from_url(urls, out_dir):
     # FIXME: Add requests.Session.get to download urls to out_dir
+    # See: https://code.tutsplus.com/tutorials/using-the-requests-module-in-python--cms-28204
+    # https://stackoverflow.com/questions/16694907/download-large-file-in-python-with-requests
     pass
 
 
