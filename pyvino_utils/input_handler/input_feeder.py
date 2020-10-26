@@ -122,7 +122,11 @@ class InputFeeder:
             image, text, position, cv2.FONT_HERSHEY_COMPLEX, font_size, color, 1,
         )
 
-    def show(self, frame, frame_name="video"):
+    def show(self, frame=None, frame_name="video"):
+        if frame is None:
+            cv2.imshow('image', self.cap)
+            cv2.waitKey(0) # waits until a key is pressed
+
         cv2.imshow(frame_name, frame)
 
     def write_video(self, output_path=".", filename="output_video.mp4"):
@@ -163,7 +167,7 @@ class InputFeeder:
     # TODO: Add context-manager to handle the closing
     def close(self):
         """Closes the VideoCapture."""
-        if "image" in self._input_type:
+        if  self._input_type != "image":
             self.cap.release()
         if self.progress_bar:
             self.progress_bar.close()
