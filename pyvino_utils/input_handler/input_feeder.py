@@ -167,9 +167,8 @@ class InputFeeder:
     # TODO: Add context-manager to handle the closing
     def close(self):
         """Closes the VideoCapture."""
-        if  'image' not in self._input_type:
+        if ('image' not in self._input_type) or self.progress_bar:
             self.cap.release()
-        if self.progress_bar:
             self.progress_bar.close()
         cv2.destroyAllWindows()
         logger.info("============ CleanUp! ============")
