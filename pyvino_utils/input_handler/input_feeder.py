@@ -73,11 +73,19 @@ class InputFeeder:
 
     @property
     def source_width(self):
-        return int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+        return (
+            int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+            if hasattr(self.cap, "get")
+            else input_feed.cap.shape[1]
+        )
 
     @property
     def source_height(self):
-        return int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        return (
+            int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+            if hasattr(self.cap, "get")
+            else input_feed.cap.shape[0]
+        )
 
     @property
     def video_len(self):
@@ -124,8 +132,8 @@ class InputFeeder:
 
     def show(self, frame=None, frame_name="video"):
         if frame is None:
-            cv2.imshow('image', self.cap)
-            cv2.waitKey(0) # waits until a key is pressed
+            cv2.imshow("image", self.cap)
+            cv2.waitKey(0)  # waits until a key is pressed
         else:
             cv2.imshow(frame_name, frame)
 
@@ -167,7 +175,7 @@ class InputFeeder:
     # TODO: Add context-manager to handle the closing
     def close(self):
         """Closes the VideoCapture."""
-        if ('image' not in self._input_type):
+        if "image" not in self._input_type:
             self.cap.release()
             if self.progress_bar:
                 self.progress_bar.close()
