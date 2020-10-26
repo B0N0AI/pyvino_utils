@@ -126,8 +126,8 @@ class InputFeeder:
         if frame is None:
             cv2.imshow('image', self.cap)
             cv2.waitKey(0) # waits until a key is pressed
-
-        cv2.imshow(frame_name, frame)
+        else:
+            cv2.imshow(frame_name, frame)
 
     def write_video(self, output_path=".", filename="output_video.mp4"):
         out_video = cv2.VideoWriter(
@@ -167,7 +167,7 @@ class InputFeeder:
     # TODO: Add context-manager to handle the closing
     def close(self):
         """Closes the VideoCapture."""
-        if  self._input_type != "image":
+        if  'image' not in self._input_type:
             self.cap.release()
         if self.progress_bar:
             self.progress_bar.close()
