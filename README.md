@@ -1,6 +1,6 @@
 # PyVINO-Utils
 
-[![Build Status](https://img.shields.io/travis/mmphego/pyvino_utils.svg)](https://travis-ci.com/mmphego/pyvino_utils)
+![Docker Build](https://github.com/B0N0AI/pyvino_utils/workflows/PyVINO%20Utils%20-%20Package%20with%20Docker/badge.svg)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/43713e0b78f547e8912ff05c9350cffb)](https://app.codacy.com/app/mmphego/pyvino_utils?utm_source=github.com&utm_medium=referral&utm_content=mmphego/pyvino_utils&utm_campaign=Badge_Grade_Dashboard)
 [![Python](https://img.shields.io/badge/Python-3.6%2B-red.svg)](https://www.python.org/downloads/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
