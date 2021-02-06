@@ -106,9 +106,16 @@ class InputFeeder:
         return self._progress_bar
 
     def resize(self, frame, height=None, width=None):
+        """Resize the the resolution of the frame."""
         if (height and width) is None:
             width, height = (self.source_width // 2, self.source_height // 2)
         return cv2.resize(frame, (width, height))
+
+    def resize_cam_input(self, height=None, width=None):
+        """Resize the resolution of the camera."""
+        if "cam" in self.input_feed.lower() and if (height and width):
+            self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
+            self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
     def draw_cirle(
         self, frame, width=None, height=None, radius=100, color=(0, 255, 0), thickness=5
