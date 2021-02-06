@@ -113,9 +113,10 @@ class InputFeeder:
 
     def resize_cam_input(self, height=None, width=None):
         """Resize the resolution of the camera."""
-        if "cam" in self.input_feed.lower() and if (height and width):
+        if "cam" in self.input_feed.lower() and (height and width):
             self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
             self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
+            logger.debug(f"Resized the webcam input to ({height!r}, {width!r})")
 
     def draw_cirle(
         self, frame, width=None, height=None, radius=100, color=(0, 255, 0), thickness=5
